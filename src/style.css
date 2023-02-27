@@ -1,0 +1,18 @@
+.graphContainer {
+    border-style: ridge;
+    border-color: #cfcbcb;
+    border-width: 1px;
+    overflow    : auto;
+}
+
+.summary {
+    overflow: auto;
+}
+
+.nodeSumContainer {
+    padding-bottom: 10px;
+}
+
+.aboutContainer {
+    overflow: auto;
+}
