@@ -16,3 +16,7 @@
 .aboutContainer {
     overflow: auto;
 }
+
+.panelText {
+    color: gray;
+}

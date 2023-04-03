@@ -3,40 +3,27 @@ import { Collapse } from 'antd';
 
 export const Links = (data) => {
 
+    const getNodeNeighbourDesc = (name, rels) => {
+        return (rels.filter(function (el) {
+            if (el.source === name | el.target === name) {
+            }
+            return (el.source === name | el.target === name)
+        }))
+    }
+
     const { Panel } = Collapse;
-
-    let panels = data.neighbours.length > 0 ?
+    let panels = data.neighbours !== undefined ?
         data.neighbours.map((item, index) => {
-            let desc = `This text describes the relationship between ${data.selectedNode.name} and ${item.name}`
-            // let key = `${item}`
+            let desc = getNodeNeighbourDesc(item.name, data.neighborsDesc)
+            desc.length === 1 ? desc = desc[0].desc : desc = ''
             return (
-                <Panel header={item.name}>{desc}</Panel>
+                <Panel header={item.name.charAt(0).toUpperCase() + item.name.slice(1)} ><p className='panelText'>{desc}</p></Panel>
             );
-        }) : <p>Please select a Node!</p>
-
-
-    // for (let i = 0; i < d.length; i++) {
-    //     header = d[i].name
-    //     panels.push(
-    //         <Panel header={header} key={i}>
-    //             <p>{text}</p>
-    //         </Panel>
-    //     )
-    // }
-
+        }) : <></>
 
     return (
         <Collapse >
             {panels}
-            {/* <Panel header="This is panel header 1" key="1">
-                <p>{text}</p>
-            </Panel>
-            <Panel header="This is panel header 2" key="2">
-                <p>{text}</p>
-            </Panel>
-            <Panel header="This is panel header 3" key="3">
-                <p>{text}</p>
-            </Panel> */}
         </Collapse>
     )
 }
