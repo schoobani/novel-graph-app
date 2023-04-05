@@ -54,6 +54,26 @@ const Dashboard = () => {
       { i: "summary", x: 0, y: 0, w: 3, h: 6, static: true },
       { i: "graph", x: 3, y: 0, w: 6.5, h: 6, static: true },
       { i: "about", x: 9.5, y: 0, w: 2.5, h: 6, static: true }
+    ],
+    md: [
+      { i: "about", x: 6, y: 0, w: 3, h: 6, static: true },
+      { i: "summary", x: 0, y: 6, w: 9, h: 6, static: true },
+      { i: "graph", x: 0, y: 0, w: 6, h: 6, static: true }
+    ],
+    sm: [
+      { i: "summary", x: 0, y: 6, w: 6, h: 6, static: true },
+      { i: "graph", x: 0, y: 0, w: 4.5, h: 6, static: true },
+      { i: "about", x: 4.5, y: 0, w: 1.5, h: 6, static: true }
+    ],
+    xs: [
+      { i: "summary", x: 0, y: 12, w: 4, h: 6, static: true },
+      { i: "graph", x: 0, y: 6, w: 4, h: 6, static: true },
+      { i: "about", x: 0, y: 0, w: 4, h: 6, static: true }
+    ],
+    xxs: [
+      { i: "summary", x: 0, y: 10, w: 2, h: 6, static: true },
+      { i: "graph", x: 0, y: 6, w: 2, h: 4, static: true },
+      { i: "about", x:0, y: 0, w: 2, h: 6, static: true }
     ]
   }
 
