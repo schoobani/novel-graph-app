@@ -1,8 +1,8 @@
 {
   "name": "novel-graph-app",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "http://schoobani.github.io/novel-graph-app",
+  "private": false,
+  "homepage": "https://schoobani.github.io/novel-graph-app",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
