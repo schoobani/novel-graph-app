@@ -5,7 +5,7 @@ export default function App() {
     return (
       <div className="App">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/{novel-graph-app}" element={<Dashboard />} />
         </Routes>
       </div>
     );
