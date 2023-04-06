@@ -1,3 +1,3 @@
-# Karamazov Brothers Novel Graph App
+## Karamazov Brothers Novel Graph App
 
-here lies description.
+This is a reactjs app to visualise the Brothers Karamazov interactions graph generated with ChatGPT. Read More about it [here](https://github.com/schoobani/novel-graph).

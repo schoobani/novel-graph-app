@@ -23,28 +23,36 @@ const getNodeNeighbour = (name, data) => {
 }
 
 
-export const Graph = ({ data,  onNodeSelection, onBackgroundClick }) => {
+export const Graph = ({ data, onNodeSelection, onBackgroundClick }) => {
 
-  let [selectedNodes, setSelectedNoded] = useState([]);
-  let [selectedLinks, setselectedLinks] = useState([]);
+  let [nieghbourNodes, setNieghbourNodes] = useState([]);
+  let [selectedNode, setSelectedNode] = useState(undefined);
+  // let [selectedLinks, setselectedLinks] = useState([]);
 
   const handleNodeClick = node => {
     onNodeSelection(node)
     let nodes = []
     if (node) {
-      nodes.push(node);
+      setSelectedNode(node);
       let neighbours = getNodeNeighbour(node.name, data)
-      setselectedLinks(neighbours.links)
+      // setselectedLinks(neighbours.links)
       neighbours.nodes.forEach(neighbor => nodes.push(neighbor));
     }
-    setSelectedNoded(nodes)
+    setNieghbourNodes(nodes)
   }
 
   const handleBackgroundClick = () => {
     onBackgroundClick()
-    setSelectedNoded([])
-    setselectedLinks([])
+    setNieghbourNodes([])
+    setSelectedNode(undefined)
   }
+
+  const getColor = (node) => {
+    if (nieghbourNodes.includes(node)) { return '#D4871F' }
+    else if (selectedNode === node) { return '#C41221' }
+    else { return '#171C1C' };
+  }
+
 
   return (
     <ForceGraph2D
@@ -55,11 +63,10 @@ export const Graph = ({ data,  onNodeSelection, onBackgroundClick }) => {
       maxZoom={10}
       linkCurvature={0.01}
       linkWidth={link => (link.value + 2) / 3}
-      linkDirectionalParticles={link => selectedLinks.includes(link) ? 5 : 0}
-      linkDirectionalParticleSpeed={d => selectedLinks.includes(d) ? d.value * 0.00005 : 0}
-      linkDirectionalParticleWidth={d => selectedLinks.includes(d) ? d.value * 0.1 : 0}
+      // linkDirectionalParticles={link => selectedLinks.includes(link) ? 5 : 0}
+      // linkDirectionalParticleSpeed={d => selectedLinks.includes(d) ? d.value * 0.00005 : 0}
+      // linkDirectionalParticleWidth={d => selectedLinks.includes(d) ? d.value * 0.1 : 0}
       nodeCanvasObject={(node, ctx, globalScale) => {
-        node.color = selectedNodes.includes(node) ? 'red' : 'blue';
         const label = node.name.charAt(0).toUpperCase() + node.name.slice(1);
         const fontSize = (node.val + 10) / globalScale;
         ctx.font = `${fontSize}px Tahoma`;
@@ -69,7 +76,7 @@ export const Graph = ({ data,  onNodeSelection, onBackgroundClick }) => {
         ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = selectedNodes.includes(node) ? '#C41221' : '#171C1C';
+        ctx.fillStyle = getColor(node)
         ctx.fillText(label, node.x, node.y);
       }}
       // nodeLabel={(node) => node.name}
