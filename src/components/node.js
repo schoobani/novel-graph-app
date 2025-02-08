@@ -4,7 +4,7 @@ export const Node = (props) => {
     const { Meta } = Card;
     const { node, nodeDesc } = props
     let desc = nodeDesc === undefined ? `` : <p className='panelText'>{nodeDesc.desc}</p>;
-    let name = node === undefined ? `Select a Node` : node.name.charAt(0).toUpperCase() + node.name.slice(1);
+    let name = node === undefined ? `Select a Character` : node.name.charAt(0).toUpperCase() + node.name.slice(1);
     return (
         <Card
         bordered

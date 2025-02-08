@@ -1,22 +1,172 @@
-.graphContainer {
-    border-style: ridge;
-    border-color: #cfcbcb;
-    border-width: 1px;
-    overflow    : auto;
-}
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .dashboard-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: #f5f5f5;
+  }
+  
+  .menu-wrapper {
+    height: 46px;
+    background-color: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 0 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    z-index: 1000;
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+  }
+  
+  .content-wrapper {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    padding: 8px 0 16px 0; /* Increased bottom padding to 16px */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the grid container vertically */
+  }
+  
+  .grid-container {
+    width: 100%;
+  }
+  
+  .footer-wrapper {
+    height: 36px;
+    background-color: #fff;
+    border-top: 1px solid #f0f0f0;
+    padding: 8px 16px;
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  .panel {
+    height: 100%;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  .scroll-container {
+    height: 100%;
+    padding: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+  }
+  
+  .nodeSumContainer {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 16px;
+  }
+  
+  .layout {
+    height: 100%;
+  }
+  
+  /* Remove margin from react-grid-layout */
+  .react-grid-layout {
+    margin: 0 !important;
+  }
+  
+  /* Ensure the menu items are visible on mobile */
+  @media (max-width: 480px) {
+    .ant-menu-item {
+      padding: 0 10px !important;
+    }
+    
+    .scroll-container {
+      padding: 8px;
+    }
+  }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .dashboard-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .dashboard-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 
-.summary {
-    overflow: auto;
-}
+  .selected-book {
+    padding: 6px 16px;
+    background: linear-gradient(135deg, #f6f8fa 0%, #ffffff 100%);
+    border: 1px solid #e1e4e8;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-left: auto;
+  }
+  
+  .book-title {
+    color: #24292e;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  /* Add responsive styles for mobile */
+  @media (max-width: 480px) {
+    .selected-book {
+      padding: 4px 12px;
+      font-size: 12px;
+    }
+  }
 
-.nodeSumContainer {
-    padding-bottom: 10px;
-}
+  /* Add these new styles */
+  .graph .scroll-container {
+    padding: 0;  /* Remove padding for graph container */
+  }
 
-.aboutContainer {
-    overflow: auto;
-}
+  /* Force Graph container styles */
+  .force-graph-container {
+    width: 100% !important;
+    height: 100% !important;
+  }
 
-.panelText {
-    color: gray;
-}
+  /* Collapse panel styles */
+  .ant-collapse {
+    border: none;
+    background: transparent;
+  }
+
+  .panelText {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    margin: 0;
+  }
+
+  /* Ensure content doesn't overflow in mobile */
+  @media (max-width: 480px) {
+    .panel {
+      min-height: 0;
+    }
+    
+    .scroll-container {
+      padding: 8px;
+    }
+  }
