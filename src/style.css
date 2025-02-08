@@ -170,3 +170,15 @@ html, body {
       padding: 8px;
     }
   }
+
+  .placeholder-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }

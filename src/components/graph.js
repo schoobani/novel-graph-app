@@ -23,7 +23,7 @@ const getNodeNeighbour = (name, data) => {
 }
 
 
-export const Graph = ({ data, onNodeSelection, onBackgroundClick }) => {
+export const Graph = ({ data, onNodeSelection, onBackgroundClick, selectedBook }) => {
 
   let [nieghbourNodes, setNieghbourNodes] = useState([]);
   let [selectedNode, setSelectedNode] = useState(undefined);
@@ -53,6 +53,13 @@ export const Graph = ({ data, onNodeSelection, onBackgroundClick }) => {
     else { return '#171C1C' };
   }
 
+  if (!data) {
+    return (
+      <div className="placeholder-container">
+        <p>Character network for {selectedBook} is coming soon!</p>
+      </div>
+    );
+  }
 
   return (
     <ForceGraph2D
