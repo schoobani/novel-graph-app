@@ -4,16 +4,13 @@ import { Collapse } from 'antd';
 export const Links = ({ neighbours, neighborsDesc, selectedBook }) => {
     const { Panel } = Collapse;
 
-    console.log(neighborsDesc)
+    // If no node is selected, show a helper message
     if (!neighbours || !neighborsDesc) {
-        if (selectedBook !== 'The Brothers Karamazov') {
-            return (
-                <div className="placeholder-container">
-                    <p>Character relationships for {selectedBook} are coming soon!</p>
-                </div>
-            );
-        }
-        return null;
+        return (
+            <div className="placeholder-container">
+                <p>Select a character to see their relationships</p>
+            </div>
+        );
     }
 
     let panels = neighbours.map((item) => {
@@ -26,6 +23,7 @@ export const Links = ({ neighbours, neighborsDesc, selectedBook }) => {
             <Panel
                 key={item.name}
                 header={item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                style={{ backgroundColor: '#f5f5f5' }}
             >
                 <p className='panelText'>{relationship ? relationship.description : 'N/A'}</p>
             </Panel>

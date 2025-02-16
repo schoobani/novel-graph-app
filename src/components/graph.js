@@ -34,7 +34,7 @@ export const Graph = ({ data, onNodeSelection, onBackgroundClick, selectedBook }
     if (currentTime - lastClickTime < 2000) {
       return;
     }
-    
+
     setLastClickTime(currentTime);
     onNodeSelection(node);
     setSelectedNode(node);
@@ -76,8 +76,9 @@ export const Graph = ({ data, onNodeSelection, onBackgroundClick, selectedBook }
     // Adjust for zoom level
     return fontSize / globalScale;
   };
-
-  if (!data) {
+  console.log(data)
+  if (!data || !data.nodes || !data.links) {
+    console.log(data)
     return (
       <div className="placeholder-container">
         <p>Character network for {selectedBook} is coming soon!</p>
@@ -89,7 +90,10 @@ export const Graph = ({ data, onNodeSelection, onBackgroundClick, selectedBook }
   return (
     <ForceGraph
       graphData={data}
-      maxZoom={10}
+      maxZoom={8}
+      minZoom={3}
+      centerAt={[0, 0]}
+      zoom={1.5}
       nodeRelSize={0}
       nodeVal={() => 0}
       linkWidth={link => (link.value + 2) / 3}

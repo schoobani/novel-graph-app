@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu } from "antd";
+import { Menu, Modal } from "antd";
 import { BookOutlined } from '@ant-design/icons';
 import { Graph } from '../components/graph';
 import { Node } from "../components/node";
@@ -15,32 +15,10 @@ import {
 } from '../layouts/dashboardLayouts';
 
 const BOOKS = {
-  KARAMAZOV: 'The Brothers Karamazov',
-  SOLITUDE: '100 Years of Solitude',
+  KARAMAZOV: 'Brothers Karamazov',
+  SOLITUDE: 'One Hundred Years of Solitude',
   MASTER_AND_MARGARITA: 'Master and Margarita'
 };
-
-const MENU_ITEMS = [
-  {
-    label: 'Books',
-    key: 'books',
-    icon: <BookOutlined />,
-    children: [
-      {
-        label: BOOKS.KARAMAZOV,
-        key: 'the-brothers-karamazov',
-      },
-      {
-        label: BOOKS.SOLITUDE,
-        key: '100-years-of-solitude',
-      },
-      {
-        label: BOOKS.MASTER_AND_MARGARITA,
-        key: 'master-and-margarita',
-      }
-    ],
-  },
-];
 
 const filterNodes = (nodes_list, data) => {
   if (!data || !Array.isArray(data)) return [];
@@ -89,6 +67,7 @@ const Dashboard = () => {
   const [graphData, setGraphData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
   const contentHeight = `calc(100vh - ${MENU_HEIGHT + FOOTER_HEIGHT + (SPACING * 2)}px)`;
 
@@ -98,13 +77,16 @@ const Dashboard = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch('https://raw.githubusercontent.com/schoobani/novel-graph/refs/heads/main/data/brothers-karamazov/graph.json');
+        // Create dynamic URL based on selectedBook
+        const baseUrl = 'https://raw.githubusercontent.com/schoobani/novel-graph/refs/heads/main/data/';
+        const bookPath = selectedBook.toLowerCase().replace(/\s+/g, '-');
+        const url = `${baseUrl}/${bookPath}/graph.json`;
+
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        // // Validate the data structure
-        console.log(data)
         if (!data || !data.nodes || !data.links) {
           throw new Error('Invalid data structure received');
         }
@@ -119,8 +101,6 @@ const Dashboard = () => {
 
     fetchData();
   }, [selectedBook]);
-
-  console.log(graphData)
 
   // Reset states when book changes
   useEffect(() => {
@@ -153,17 +133,12 @@ const Dashboard = () => {
   const getBookData = () => {
     if (!graphData) return { graphData: null, descriptions: null, rels: [] };
 
-    switch (selectedBook) {
-      case BOOKS.KARAMAZOV:
-        return {
-          graphData: graphData,
-          descriptions: graphData.characters || [],
-          rels: graphData.character_relations || []
-        };
-      case BOOKS.SOLITUDE:
-      default:
-        return { graphData: null, descriptions: null, rels: [] };
-    }
+    // Always return the graph data with appropriate fallbacks for missing properties
+    return {
+      graphData: graphData,
+      descriptions: graphData.characters || [],
+      rels: graphData.character_relations || []
+    };
   };
 
   const handleNodeClick = (node) => {
@@ -186,9 +161,44 @@ const Dashboard = () => {
     setSelectedBook(bookName);
   };
 
+  const showAboutModal = () => {
+    setIsAboutModalOpen(true);
+  };
+
+  const handleAboutModalClose = () => {
+    setIsAboutModalOpen(false);
+  };
+
+  const MENU_ITEMS = [
+    {
+      label: 'Books',
+      key: 'books',
+      icon: <BookOutlined />,
+      children: [
+        {
+          label: BOOKS.KARAMAZOV,
+          key: 'brothers-karamazov',
+        },
+        {
+          label: BOOKS.SOLITUDE,
+          key: '100-years-of-solitude',
+        },
+        // {
+        //   label: BOOKS.MASTER_AND_MARGARITA,
+        //   key: 'master-and-margarita',
+        // }
+      ],
+    },
+    {
+      label: 'About',
+      key: 'about',
+      onClick: showAboutModal
+    }
+  ];
+
   const menuItems = MENU_ITEMS.map(item => ({
     ...item,
-    children: item.children.map(child => ({
+    children: item.children?.map(child => ({
       ...child,
       onClick: () => handleBookSelect(child.label)
     }))
@@ -201,7 +211,7 @@ const Dashboard = () => {
         mode="horizontal"
         items={menuItems}
         style={{
-          width: 'fit-content',
+          width: '100%',
           minWidth: 'auto'
         }}
       />
@@ -218,6 +228,11 @@ const Dashboard = () => {
 
     if (error) {
       return <div className="error">Error: {error}</div>;
+    }
+
+    // Only process and render graph when we have data and aren't loading
+    if (!graphData) {
+      return <div className="loading">Loading graph data...</div>;
     }
 
     const { graphData: currentGraphData, descriptions, rels } = getBookData();
@@ -264,14 +279,34 @@ const Dashboard = () => {
     );
   };
 
+  const renderAboutModal = () => (
+    <Modal
+      title="About Novel Graph"
+      open={isAboutModalOpen}
+      onCancel={handleAboutModalClose}
+      footer={null}
+      centered
+    >
+      <p>
+        Novel Graph is a personal passion project that leverages LLMs to extract character relationships from famous novels and visualize them as interactive graphs.
+        <br />
+        The prompting and processing pipeline is available in this GitHub repository:  <a href="https://github.com/schoobani/novel-graph">Novel Graph</a>.
+        <br />
+        If you're passionate about a novel, you can submit a pull request to have its relationship graph featured on the dashboard!
+      </p>
+
+    </Modal>
+  );
+
   return (
     <div className="dashboard-container">
       {renderMenu()}
+      {renderAboutModal()}
       <div className="content-wrapper">
         {renderContent()}
       </div>
       <div className="footer-wrapper">
-        Novel Graph © {new Date().getFullYear()}
+        Novel Graph - {new Date().getFullYear()}
       </div>
     </div>
   );
