@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/novel-graph-app/static/css/main.01161a54.css",
-    "main.js": "/novel-graph-app/static/js/main.66caecbf.js",
+    "main.css": "/novel-graph-app/static/css/main.dc040f98.css",
+    "main.js": "/novel-graph-app/static/js/main.ae8d52a5.js",
     "static/media/cover.jpeg": "/novel-graph-app/static/media/cover.133352a782d3c2d6c257.jpeg",
     "index.html": "/novel-graph-app/index.html",
-    "main.01161a54.css.map": "/novel-graph-app/static/css/main.01161a54.css.map",
-    "main.66caecbf.js.map": "/novel-graph-app/static/js/main.66caecbf.js.map"
+    "main.dc040f98.css.map": "/novel-graph-app/static/css/main.dc040f98.css.map",
+    "main.ae8d52a5.js.map": "/novel-graph-app/static/js/main.ae8d52a5.js.map"
   },
   "entrypoints": [
-    "static/css/main.01161a54.css",
-    "static/js/main.66caecbf.js"
+    "static/css/main.dc040f98.css",
+    "static/js/main.ae8d52a5.js"
   ]
 }
