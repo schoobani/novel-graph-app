@@ -1,4 +1,4 @@
-import { ForceGraph2D } from 'react-force-graph';
+import { ForceGraph2D as ForceGraph } from 'react-force-graph';
 import React, { useState } from "react";
 
 
@@ -24,27 +24,33 @@ const getNodeNeighbour = (name, data) => {
 
 
 export const Graph = ({ data, onNodeSelection, onBackgroundClick, selectedBook }) => {
-
   let [nieghbourNodes, setNieghbourNodes] = useState([]);
   let [selectedNode, setSelectedNode] = useState(undefined);
+  let [lastClickTime, setLastClickTime] = useState(0);
   // let [selectedLinks, setselectedLinks] = useState([]);
 
   const handleNodeClick = node => {
-    onNodeSelection(node)
-    let nodes = []
-    if (node) {
-      setSelectedNode(node);
-      let neighbours = getNodeNeighbour(node.name, data)
-      // setselectedLinks(neighbours.links)
-      neighbours.nodes.forEach(neighbor => nodes.push(neighbor));
+    const currentTime = Date.now();
+    if (currentTime - lastClickTime < 2000) {
+      return;
     }
-    setNieghbourNodes(nodes)
+    
+    setLastClickTime(currentTime);
+    onNodeSelection(node);
+    setSelectedNode(node);
+    let neighbours = getNodeNeighbour(node.name, data);
+    let nodes = [];
+    neighbours.nodes.forEach(neighbor => nodes.push(neighbor));
+    setNieghbourNodes(nodes);
   }
 
-  const handleBackgroundClick = () => {
-    onBackgroundClick()
-    setNieghbourNodes([])
-    setSelectedNode(undefined)
+  const handleBackgroundClick = event => {
+    // Only handle background clicks if the click was directly on the background
+    if (event && event.target.nodeName === 'CANVAS') {
+      onBackgroundClick()
+      setNieghbourNodes([])
+      setSelectedNode(undefined)
+    }
   }
 
   const getColor = (node) => {
@@ -52,6 +58,24 @@ export const Graph = ({ data, onNodeSelection, onBackgroundClick, selectedBook }
     else if (selectedNode === node) { return '#C41221' }
     else { return '#171C1C' };
   }
+
+  const getNodeSize = (value, globalScale) => {
+    // Base font size range (min: 12px, max: 24px)
+    const minSize = 12;
+    const maxSize = 24;
+
+    // Find the min and max values in the dataset
+    const values = data.nodes.map(node => node.val);
+    const minVal = Math.min(...values);
+    const maxVal = Math.max(...values);
+
+    // Linear scaling of the node value to our desired font size range
+    const scale = (value - minVal) / (maxVal - minVal);
+    const fontSize = minSize + scale * (maxSize - minSize);
+
+    // Adjust for zoom level
+    return fontSize / globalScale;
+  };
 
   if (!data) {
     return (
@@ -61,35 +85,48 @@ export const Graph = ({ data, onNodeSelection, onBackgroundClick, selectedBook }
     );
   }
 
+  // Completely hides default node circles
   return (
-    <ForceGraph2D
+    <ForceGraph
       graphData={data}
-      dagMode='zout'
-      zoomToFit={true}
-      minZoom={3}
       maxZoom={10}
-      linkCurvature={0.01}
+      nodeRelSize={0}
+      nodeVal={() => 0}
       linkWidth={link => (link.value + 2) / 3}
-      // linkDirectionalParticles={link => selectedLinks.includes(link) ? 5 : 0}
-      // linkDirectionalParticleSpeed={d => selectedLinks.includes(d) ? d.value * 0.00005 : 0}
-      // linkDirectionalParticleWidth={d => selectedLinks.includes(d) ? d.value * 0.1 : 0}
+      nodeCanvasObjectMode={() => 'before'} // Ensures correct hitbox detection
       nodeCanvasObject={(node, ctx, globalScale) => {
         const label = node.name.charAt(0).toUpperCase() + node.name.slice(1);
-        const fontSize = (node.val + 10) / globalScale;
+        const fontSize = getNodeSize(node.val, globalScale);
         ctx.font = `${fontSize}px Tahoma`;
+
         const textWidth = ctx.measureText(label).width;
-        const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.3); // some padding
-        ctx.fillStyle = 'rgba(242, 242, 242, 10)';
-        ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+        const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.3);
+
+        node.__bckgDimensions = bckgDimensions; // Store dimensions for hitbox adjustments
+
+        // Background
+        ctx.fillStyle = 'rgba(242, 242, 242, 1)';
+        ctx.fillRect(
+          node.x - bckgDimensions[0] / 2,
+          node.y - bckgDimensions[1] / 2,
+          ...bckgDimensions
+        );
+
+        // Text
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = getColor(node)
+        ctx.fillStyle = getColor(node);
         ctx.fillText(label, node.x, node.y);
       }}
-      // nodeLabel={(node) => node.name}
-      // nodeColor={(node) => selectedNodes.includes(node) ? 'red' : 'blue'}
+      nodePointerAreaPaint={(node, color, ctx) => {
+        if (!node.__bckgDimensions) return;
+        const [width, height] = node.__bckgDimensions;
+        ctx.fillStyle = color;
+        ctx.fillRect(node.x - width / 2, node.y - height / 2, width, height);
+      }}
       onNodeClick={handleNodeClick}
       onBackgroundClick={handleBackgroundClick}
     />
+
   );
 }

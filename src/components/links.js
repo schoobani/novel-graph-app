@@ -4,6 +4,7 @@ import { Collapse } from 'antd';
 export const Links = ({ neighbours, neighborsDesc, selectedBook }) => {
     const { Panel } = Collapse;
 
+    console.log(neighborsDesc)
     if (!neighbours || !neighborsDesc) {
         if (selectedBook !== 'The Brothers Karamazov') {
             return (
@@ -15,25 +16,25 @@ export const Links = ({ neighbours, neighborsDesc, selectedBook }) => {
         return null;
     }
 
-    const getNodeNeighbourDesc = (name, rels) => {
-        return (rels.filter(function (el) {
-            if (el.source === name | el.target === name) {
-            }
-            return (el.source === name | el.target === name)
-        }))
-    }
-
-    let panels = neighbours.map((item, index) => {
-        let desc = getNodeNeighbourDesc(item.name, neighborsDesc)
-        desc.length === 1 ? desc = desc[0].desc : desc = ''
-        return (
-            <Panel header={item.name.charAt(0).toUpperCase() + item.name.slice(1)} ><p className='panelText'>{desc}</p></Panel>
+    let panels = neighbours.map((item) => {
+        // Find the relationship description for this neighbor
+        const relationship = neighborsDesc.find(rel =>
+            (rel.from === item.name || rel.to === item.name)
         );
-    })
+
+        return (
+            <Panel
+                key={item.name}
+                header={item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+            >
+                <p className='panelText'>{relationship ? relationship.description : 'N/A'}</p>
+            </Panel>
+        );
+    });
 
     return (
-        <Collapse >
+        <Collapse>
             {panels}
         </Collapse>
-    )
-}
+    );
+};

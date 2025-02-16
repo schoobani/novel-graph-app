@@ -4,7 +4,7 @@ export const About = ({ selectedBook }) => {
     const { Meta } = Card;
 
     const getBookContent = () => {
-        if (selectedBook == 'The Brothers Karamazov') {
+        if (selectedBook === 'The Brothers Karamazov') {
             return {
                 cover: require('../assets/cover.jpeg'),
                 description: <p>The Brothers Karamazov is a novel by the Russian author Fyodor Dostoevsky, first published in 1880. It tells the story of the three Karamazov brothers, their dysfunctional family dynamics, and their eventual involvement in the murder of their father. The novel is considered a masterpiece of world literature for its psychological depth, philosophical themes, and exploration of human nature."</p>
