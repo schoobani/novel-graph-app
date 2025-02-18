@@ -17,7 +17,8 @@ import {
 const BOOKS = {
   KARAMAZOV: 'Brothers Karamazov',
   SOLITUDE: 'One Hundred Years of Solitude',
-  MASTER_AND_MARGARITA: 'Master and Margarita'
+  MASTER_AND_MARGARITA: 'Master and Margarita',
+  WAR_AND_PEACE: 'War and Peace',
 };
 
 const filterNodes = (nodes_list, data) => {
@@ -87,6 +88,7 @@ const Dashboard = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
+        console.log(data)
         if (!data || !data.nodes || !data.links) {
           throw new Error('Invalid data structure received');
         }
@@ -175,13 +177,17 @@ const Dashboard = () => {
       key: 'books',
       icon: <BookOutlined />,
       children: [
-        {
+        {       
           label: BOOKS.KARAMAZOV,
           key: 'brothers-karamazov',
         },
         {
           label: BOOKS.SOLITUDE,
           key: '100-years-of-solitude',
+        },
+        {
+          label: BOOKS.WAR_AND_PEACE,
+          key: 'war-and-peace',
         },
         // {
         //   label: BOOKS.MASTER_AND_MARGARITA,
