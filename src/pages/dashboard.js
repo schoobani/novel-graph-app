@@ -189,10 +189,10 @@ const Dashboard = () => {
           label: BOOKS.WAR_AND_PEACE,
           key: 'war-and-peace',
         },
-        // {
-        //   label: BOOKS.MASTER_AND_MARGARITA,
-        //   key: 'master-and-margarita',
-        // }
+        {
+          label: BOOKS.MASTER_AND_MARGARITA,
+          key: 'master-and-margarita',
+        }
       ],
     },
     {

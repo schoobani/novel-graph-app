@@ -20,6 +20,11 @@ export const About = ({ selectedBook }) => {
                     <p>The book chronicles the French invasion of Russia and its aftermath during the Napoleonic era. It uses five interlocking narratives following different Russian aristocratic families to illustrate Napoleon's impact on Tsarist society. Portions of an earlier version, titled The Year 1805, were serialized in The Russian Messenger from 1865 to 1867 before the novel was published in its entirety in 1869.</p></>
             };
         }
+        else if (selectedBook === 'Master and Margarita') {
+            return {
+                description: <p>The Master and Margarita is a novel by Russian writer Mikhail Bulgakov, written in the Soviet Union between 1928 and 1940 during Stalin's regime. A censored version was published in Moscow magazine in 1966–1967, after the writer's death. The manuscript was not published as a book until 1967, in Paris. A samizdat version circulated that included parts cut out by official censors; these were incorporated in a 1969 version published in Frankfurt. The novel has since been published in several languages and editions.</p>
+            };
+        }
         return {
             cover: null,
             description: <p>{selectedBook} is coming soon!</p>,
